@@ -1,0 +1,4 @@
+models/
+bazel-*
+*.apk.idsig
+docs_working_screenshot.png
