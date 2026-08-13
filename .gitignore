@@ -2,3 +2,4 @@ models/
 bazel-*
 *.apk.idsig
 docs_working_screenshot.png
+docs/screenshot_local_backup.png

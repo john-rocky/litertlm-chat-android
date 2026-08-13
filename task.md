@@ -7,18 +7,18 @@ Before beginning any next step (x.) or sub-step (x.y), or if the active history 
 - 1.3.3 Check if a monitoring subagent is active for this task, and if not, instantiate one as required by the Monitoring Subagent Constraint.
 
 ## Environment, Tools & Reference Paths
-- SKILL.md: /Users/majimadaisuke/code/litert-lm-0160-android/agents/skills/create-litert-lm-android-demo-app/SKILL.md
-- compliance_checklist_dependency.md: /Users/majimadaisuke/code/litert-lm-0160-android/agents/skills/create-litert-lm-android-demo-app/references/compliance_checklist_dependency.md
-- compliance_checklist_inference.md: /Users/majimadaisuke/code/litert-lm-0160-android/agents/skills/create-litert-lm-android-demo-app/references/compliance_checklist_inference.md
-- compliance_checklist_ui.md: /Users/majimadaisuke/code/litert-lm-0160-android/agents/skills/create-litert-lm-android-demo-app/references/compliance_checklist_ui.md
-- dependency_maven_integration.md: /Users/majimadaisuke/code/litert-lm-0160-android/agents/skills/create-litert-lm-android-demo-app/references/dependency_maven_integration.md
-- dependency_source_build.md: /Users/majimadaisuke/code/litert-lm-0160-android/agents/skills/create-litert-lm-android-demo-app/references/dependency_source_build.md
-- inference_implementation.md: /Users/majimadaisuke/code/litert-lm-0160-android/agents/skills/create-litert-lm-android-demo-app/references/inference_implementation.md
-- ui_layout_and_state.md: /Users/majimadaisuke/code/litert-lm-0160-android/agents/skills/create-litert-lm-android-demo-app/references/ui_layout_and_state.md
-- Android SDK: /Users/majimadaisuke/Library/Android/sdk
-- adb: /Users/majimadaisuke/Library/Android/sdk/platform-tools/adb
+- SKILL.md: ~/code/litert-lm-0160-android/agents/skills/create-litert-lm-android-demo-app/SKILL.md
+- compliance_checklist_dependency.md: ~/code/litert-lm-0160-android/agents/skills/create-litert-lm-android-demo-app/references/compliance_checklist_dependency.md
+- compliance_checklist_inference.md: ~/code/litert-lm-0160-android/agents/skills/create-litert-lm-android-demo-app/references/compliance_checklist_inference.md
+- compliance_checklist_ui.md: ~/code/litert-lm-0160-android/agents/skills/create-litert-lm-android-demo-app/references/compliance_checklist_ui.md
+- dependency_maven_integration.md: ~/code/litert-lm-0160-android/agents/skills/create-litert-lm-android-demo-app/references/dependency_maven_integration.md
+- dependency_source_build.md: ~/code/litert-lm-0160-android/agents/skills/create-litert-lm-android-demo-app/references/dependency_source_build.md
+- inference_implementation.md: ~/code/litert-lm-0160-android/agents/skills/create-litert-lm-android-demo-app/references/inference_implementation.md
+- ui_layout_and_state.md: ~/code/litert-lm-0160-android/agents/skills/create-litert-lm-android-demo-app/references/ui_layout_and_state.md
+- Android SDK: ~/Library/Android/sdk
+- adb: ~/Library/Android/sdk/platform-tools/adb
 - bazel/bazelisk: /opt/homebrew/bin/bazel / /opt/homebrew/bin/bazelisk
-- Project root: /Users/majimadaisuke/code/litertlm-chat-android
+- Project root: ~/code/litertlm-chat-android
 - Recorded inputs: 2.1 root=~/code/litertlm-chat-android; 2.2 scenario=Maven Integration; 2.3 SDK=~/Library/Android/sdk (NDK 27.3.13750724 to install if needed); 2.4 device=Pixel 8a (arm64-v8a), models=litert-community/LFM2.5-VL-450M int4 (primary) + LFM2.5-VL-3B int4 (secondary)
 
 ## Core Constraints & Technical Rules (verbatim)

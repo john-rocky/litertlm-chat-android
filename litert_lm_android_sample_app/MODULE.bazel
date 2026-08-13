@@ -28,7 +28,7 @@ android_sdk_repository_extension = use_extension(
     "android_sdk_repository_extension",
 )
 android_sdk_repository_extension.configure(
-    path = "/Users/majimadaisuke/Library/Android/sdk",
+    path = "/path/to/Android/sdk",
     api_level = 35,
     build_tools_version = "35.0.0",
 )
@@ -42,7 +42,7 @@ android_ndk_repository_extension = use_extension(
     "android_ndk_repository_extension",
 )
 android_ndk_repository_extension.configure(
-    path = "/Users/majimadaisuke/Library/Android/sdk/ndk/27.3.13750724",
+    path = "/path/to/Android/sdk/ndk/27.3.13750724",
 )
 use_repo(android_ndk_repository_extension, "androidndk")
 register_toolchains("@androidndk//:all")
