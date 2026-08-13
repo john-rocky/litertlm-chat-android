@@ -8,6 +8,20 @@ Verified on a Pixel 8a with [litert-community/LFM2.5-VL-450M](https://huggingfac
 
 ![working screenshot](docs/screenshot.png)
 
+## Verified models (Pixel 8a, this app, 2026-08-13)
+
+| Model (litert-community) | Size | Load result | Sample answer |
+|---|---|---|---|
+| LFM2.5-VL-450M int4 | 388 MB | **gpu** (text-GPU + vision-CPU) | "A baseball player is getting ready to hit a ball with a bat." |
+| LFM2.5-VL-1.6B int4 | 1.3 GB | **gpu** (text-GPU + vision-CPU) | "A baseball player is getting ready to swing his bat." |
+| FastVLM-0.5B | 1.16 GB | **gpu** | "A baseball player in an orange and white uniform … is poised to swing at a pitch, while a catcher … crouches behind him." |
+| SmolVLM2-500M | 361 MB | **gpu** | "A baseball player in a red uniform is swinging at a ball while a catcher in a yellow uniform watches." |
+| PaddleOCR-VL-1.6 | 1.39 GB | **gpu** | Sign OCR, all three lines: "CLOSED BACK AT 3 PM" |
+| Qwen2-VL-2B | 1.78 GB | process killed during engine init on BOTH backends (app memory budget on the 8 GB device; the CLI-measured numbers on its card are unaffected) | — |
+| LFM2.5-VL-3B int4 | 2.35 GB | not verified in-app: the test device's storage manager kept evicting the file at 97%+ disk. Budget ~2× the file size free (the app copies models to its cache) | — |
+
+Notes: "gpu" is what the cascade actually loaded (the vision encoder runs on CPU for the LFM2.5-VL family — see Findings). Every model above was driven through the exact same flow: file picker → backend radio → photo attach → prompt.
+
 ## Build
 
 Prereqs: Android SDK (API 35, build-tools 35.0.0), NDK **27.3.13750724**, `bazelisk`.
