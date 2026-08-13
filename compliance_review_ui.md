@@ -45,7 +45,7 @@ Paths below: `K` = `litert_lm_android_sample_app/src/main/java/com/litertlm/chat
 | Text-only Fallback Buttons Disabling | Pass | K:135 `btnImage.isEnabled = ready && modelIsMultimodal`; K:136 audio kept disabled |
 | Image Picker (Storage Select) | Pass | K:96–100 ACTION_GET_CONTENT `image/*` via startActivityForResult |
 | Audio Picker (Storage Select) | Pass | K:103–107 ACTION_GET_CONTENT `audio/*` via startActivityForResult |
-| Images Rendered Visually | Pass | K:onImagePicked adds ImageView with decoded bitmap immediately on selection; also rendered in user bubble at send (K:addUserBubble) |
+| Images Rendered Visually | Pass | K onImagePicked (grep -n "Render the picked image" -> line 228 region) adds ImageView with decoded bitmap immediately on selection; send does NOT re-render (onSend passes image=null to addUserBubble with comment, re-audited after dedup change 2026-08-13) |
 | Audio Clearly Indicated (Filename/Icon) | Pass | K:onAudioPicked adds note "Audio attached: 🎵 `<name>`" immediately on selection |
 | Audio Filename Resolution (`OpenableColumns`) | Pass | K:322 copyToCache resolves `OpenableColumns.DISPLAY_NAME` for every picked file incl. audio |
 | Background File Operations | Pass | K:145/220 and onAudioPicked: all copyToCache calls inside `withContext(Dispatchers.IO)` |

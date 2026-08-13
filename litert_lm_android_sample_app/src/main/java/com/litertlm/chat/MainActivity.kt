@@ -190,7 +190,9 @@ class MainActivity : Activity() {
         if (text.isEmpty() && image == null) return
         etInput.setText("")
         pendingImageFile = null
-        addUserBubble(text, image)
+        // The image was already rendered in the conversation at selection time;
+        // don't render it a second time in the user bubble.
+        addUserBubble(text, null)
         applyState(UiState.INFERRING)
         startLoadingAnimation()
         val answerView = TextView(this).apply {
