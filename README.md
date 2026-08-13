@@ -4,7 +4,7 @@ A minimal Android chat app for **LiteRT-LM** (`.litertlm`) models — text **and
 
 Why it exists: as of LiteRT-LM 0.16.0 there is no stock way to run **hybrid vision-language `.litertlm` bundles with image input on Android** — the Gallery app does not accept hybrid-architecture imports and the `litert_lm_main` CLI has no image flag. This app fills that gap with ~500 lines of Kotlin: pick any `.litertlm` from storage, pick a backend, attach a photo, chat.
 
-Verified on a Pixel 8a with [litert-community/LFM2.5-VL-450M](https://huggingface.co/litert-community/LFM2.5-VL-450M) (int4, 388 MB): text graph on the **OpenCL GPU**, vision encoder on CPU, streaming answers. The sibling [1.6B](https://huggingface.co/litert-community/LFM2.5-VL-1.6B) and [3B](https://huggingface.co/litert-community/LFM2.5-VL-3B) bundles load the same way.
+Verified on a Pixel 8a across six models from [litert-community](https://huggingface.co/litert-community) — see the table below. For the LFM2.5-VL family the text graph runs on the **OpenCL GPU** with the vision encoder on CPU, streaming answers.
 
 ![working screenshot](docs/screenshot.png)
 
