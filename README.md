@@ -6,7 +6,7 @@ An Android app that loads a `.litertlm` model from the phone's storage and chats
 <img src="docs/screenshot.png" alt="The app on a Pixel 8a with LFM2.5-VL-450M, answering a question about a baseball photo" width="300">
 </p>
 
-I built it because, as of LiteRT-LM 0.16.0, the Gallery app did not accept hybrid vision-language models such as LFM2.5-VL, so I had no app to give one a photo on Android.
+I built it to try LFM2.5-VL with photos on an Android phone. The screenshot is from an earlier build that drew the photo twice; the app now draws it once.
 
 ## Models I ran on a Pixel 8a
 
@@ -40,7 +40,7 @@ adb install -r bazel-bin/litertlm_chat.apk
 
 I built it on a Mac, so `.bazelrc` sets `DEVELOPER_DIR` to `/Applications/Xcode.app/Contents/Developer`. If your Xcode is elsewhere, or you build on another system, change or delete those entries.
 
-`MODULE.bazel` takes the latest `litertlm-android` release, which is now newer than the 0.16.0 I ran, and I have not built against a newer one. To get 0.16.0, write `0.16.0` in place of `latest.release`. The LFM2.5-VL-450M, SmolVLM2-500M and PaddleOCR-VL-1.6 files on the Hub have been replaced since those runs, and their model cards say the new files need LiteRT-LM 0.19.0 or later on the Android GPU. With 0.16.0, use the earlier files the cards link.
+`MODULE.bazel` takes the latest `litertlm-android` release, which is now newer than the 0.16.0 I ran, and I have not built against a newer one. To get 0.16.0, write `0.16.0` in place of `latest.release`. The LFM2.5-VL-450M, SmolVLM2-500M and PaddleOCR-VL-1.6 files on the Hub have been replaced since those runs, and their model cards say the new files need LiteRT-LM 0.19.0 or later on the Android GPU. With 0.16.0, use the earlier files the cards link; the SmolVLM2-500M and PaddleOCR-VL-1.6 ones were edited after my runs (tokenizer and metadata).
 
 ## Usage
 

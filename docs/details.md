@@ -4,7 +4,7 @@ This page is the earlier README, from 2026-08-13, on `litertlm-android` 0.16.0. 
 
 A minimal Android chat app for **LiteRT-LM** (`.litertlm`) models — text **and images** — built with the official [`litertlm-android` Maven AAR](https://maven.google.com/web/index.html#com.google.ai.edge.litertlm:litertlm-android) (0.16.0) and Bazel 9.
 
-Why it exists: as of LiteRT-LM 0.16.0 there is no stock way to run **hybrid vision-language `.litertlm` bundles with image input on Android** — the Gallery app does not accept hybrid-architecture imports and the `litert_lm_main` CLI has no image flag. This app fills that gap with ~500 lines of Kotlin: pick any `.litertlm` from storage, pick a backend, attach a photo, chat.
+The app is ~500 lines of Kotlin: pick any `.litertlm` from storage, pick a backend, attach a photo, chat.
 
 Verified on a Pixel 8a across six models from [litert-community](https://huggingface.co/litert-community) — see the table below. For the LFM2.5-VL family the text graph runs on the **OpenCL GPU** with the vision encoder on CPU, streaming answers.
 
@@ -38,7 +38,7 @@ bazelisk build //:litertlm_chat \
 adb install -r bazel-bin/litertlm_chat.apk
 ```
 
-macOS note: if your `xcode-select` points at an Xcode **beta**, bazel host-tool compiles fail with "absolute path inclusion(s)". The committed `.bazelrc` pins `DEVELOPER_DIR` to `/Applications/Xcode.app` for repo rules, target actions AND host actions (`--host_action_env` is the one people miss) — adjust or delete on other setups.
+macOS note: if your `xcode-select` points at an Xcode **beta**, bazel host-tool compiles fail with "absolute path inclusion(s)". The committed `.bazelrc` pins `DEVELOPER_DIR` to `/Applications/Xcode.app/Contents/Developer` for repo rules, target actions AND host actions (`--host_action_env` is the one people miss) — adjust or delete on other setups.
 
 ## Findings baked into the code (the parts that cost time)
 
