@@ -1,32 +1,34 @@
 # litertlm-chat-android
 
-A minimal Android chat app for **LiteRT-LM** (`.litertlm`) models — text **and images** — built with the official [`litertlm-android` Maven AAR](https://maven.google.com/web/index.html#com.google.ai.edge.litertlm:litertlm-android) (0.16.0) and Bazel 9.
+An Android app that loads a `.litertlm` model from the phone's storage and chats with it on the device, with text and photos. It is about 500 lines of Kotlin on Google's [`litertlm-android`](https://maven.google.com/web/index.html#com.google.ai.edge.litertlm:litertlm-android), short enough to read as sample code. [`ChatEngine.kt`](litert_lm_android_sample_app/src/main/java/com/litertlm/chat/ChatEngine.kt) is where a photo reaches the model.
 
-Why it exists: as of LiteRT-LM 0.16.0 there is no stock way to run **hybrid vision-language `.litertlm` bundles with image input on Android** — the Gallery app does not accept hybrid-architecture imports and the `litert_lm_main` CLI has no image flag. This app fills that gap with ~500 lines of Kotlin: pick any `.litertlm` from storage, pick a backend, attach a photo, chat.
+<p align="center">
+<img src="docs/screenshot.png" alt="The app on a Pixel 8a with LFM2.5-VL-450M, answering a question about a baseball photo" width="300">
+</p>
 
-Verified on a Pixel 8a across six models from [litert-community](https://huggingface.co/litert-community) — see the table below. For the LFM2.5-VL family the text graph runs on the **OpenCL GPU** with the vision encoder on CPU, streaming answers.
+I built it because, as of LiteRT-LM 0.16.0, the Gallery app did not accept hybrid vision-language models such as LFM2.5-VL, so I had no app to give one a photo on Android.
 
-![working screenshot](docs/screenshot.png)
+## Models I ran on a Pixel 8a
 
-## Verified models (Pixel 8a, this app, 2026-08-13)
+These worked in the app in August 2026, on `litertlm-android` 0.16.0:
 
-| Model (litert-community) | Size | Load result | Sample answer |
+| Model from [litert-community](https://huggingface.co/litert-community) | Size | Loaded on | Sample answer |
 |---|---|---|---|
-| LFM2.5-VL-450M int4 | 388 MB | **gpu** (text-GPU + vision-CPU) | "A baseball player is getting ready to hit a ball with a bat." |
-| LFM2.5-VL-1.6B int4 | 1.3 GB | **gpu** (text-GPU + vision-CPU) | "A baseball player is getting ready to swing his bat." |
-| FastVLM-0.5B | 1.16 GB | **gpu** | "A baseball player in an orange and white uniform … is poised to swing at a pitch, while a catcher … crouches behind him." |
-| SmolVLM2-500M | 361 MB | **gpu** | "A baseball player in a red uniform is swinging at a ball while a catcher in a yellow uniform watches." |
-| PaddleOCR-VL-1.6 | 1.39 GB | **gpu** | Sign OCR, all three lines: "CLOSED BACK AT 3 PM" |
-| Qwen2-VL-2B | 1.78 GB | process killed during engine init on BOTH backends (app memory budget on the 8 GB device; the CLI-measured numbers on its card are unaffected) | — |
-| LFM2.5-VL-3B int4 | 2.35 GB | not verified in-app: the test device's storage manager kept evicting the file at 97%+ disk. Budget ~2× the file size free (the app copies models to its cache) | — |
+| [LFM2.5-VL-450M](https://huggingface.co/litert-community/LFM2.5-VL-450M) int4 | 407 MB | `gpu`: text on the GPU, vision on the CPU | "A baseball player is getting ready to hit a ball with a bat." |
+| [LFM2.5-VL-1.6B](https://huggingface.co/litert-community/LFM2.5-VL-1.6B) int4 | 1.3 GB | `gpu`: text on the GPU, vision on the CPU | "A baseball player is getting ready to swing his bat." |
+| [FastVLM-0.5B](https://huggingface.co/litert-community/FastVLM-0.5B) | 1.16 GB | `gpu` | "A baseball player in an orange and white uniform … is poised to swing at a pitch, while a catcher … crouches behind him." |
+| [SmolVLM2-500M](https://huggingface.co/litert-community/SmolVLM2-500M) | 361 MB | `gpu` | "A baseball player in a red uniform is swinging at a ball while a catcher in a yellow uniform watches." |
+| [PaddleOCR-VL-1.6](https://huggingface.co/litert-community/PaddleOCR-VL-1.6) | 1.39 GB | `gpu` | Read all three lines of a sign: "CLOSED BACK AT 3 PM" |
 
-Notes: "gpu" is what the cascade actually loaded (the vision encoder runs on CPU for the LFM2.5-VL family — see Findings). Every model above was driven through the exact same flow: file picker → backend radio → photo attach → prompt.
+On the LFM2.5-VL models, only the top quarter of the photo reaches the model, so questions about position come out wrong ([LiteRT-LM#3246](https://github.com/google-ai-edge/LiteRT-LM/issues/3246), still open).
+
+The app copies each model to its cache, so leave free space of about twice the file size.
+
+Two larger models did not run in the app on this 8 GB phone. While loading Qwen2-VL-2B (1.78 GB), the app's process was killed, on both backends. I couldn't test LFM2.5-VL-3B int4 (2.35 GB): the phone's disk was over 97 % full, and its storage manager kept removing the file.
 
 ## Build
 
-Prereqs: Android SDK (API 35, build-tools 35.0.0), NDK **27.3.13750724**, `bazelisk`.
-
-Edit two machine-specific paths in `litert_lm_android_sample_app/MODULE.bazel` (`android_sdk_repository_extension.configure` and `android_ndk_repository_extension.configure`), then:
+There is no prebuilt APK. To build it with Bazel 9, you need the Android SDK with API 35 and build-tools 35.0.0, NDK 27.3.13750724, and `bazelisk`. In `litert_lm_android_sample_app/MODULE.bazel`, set `path` in `android_sdk_repository_extension.configure` and `android_ndk_repository_extension.configure` to your SDK and NDK. Then run:
 
 ```bash
 cd litert_lm_android_sample_app
@@ -36,24 +38,19 @@ bazelisk build //:litertlm_chat \
 adb install -r bazel-bin/litertlm_chat.apk
 ```
 
-macOS note: if your `xcode-select` points at an Xcode **beta**, bazel host-tool compiles fail with "absolute path inclusion(s)". The committed `.bazelrc` pins `DEVELOPER_DIR` to `/Applications/Xcode.app` for repo rules, target actions AND host actions (`--host_action_env` is the one people miss) — adjust or delete on other setups.
+I built it on a Mac, so `.bazelrc` sets `DEVELOPER_DIR` to `/Applications/Xcode.app/Contents/Developer`. If your Xcode is elsewhere, or you build on another system, change or delete those entries.
+
+`MODULE.bazel` takes the latest `litertlm-android` release, which is now newer than the 0.16.0 I ran, and I have not built against a newer one. To get 0.16.0, write `0.16.0` in place of `latest.release`. The LFM2.5-VL-450M, SmolVLM2-500M and PaddleOCR-VL-1.6 files on the Hub have been replaced since those runs, and their model cards say the new files need LiteRT-LM 0.19.0 or later on the Android GPU. With 0.16.0, use the earlier files the cards link.
 
 ## Usage
 
 1. Push or download a `.litertlm` model to the device (e.g. from [litert-community](https://huggingface.co/litert-community)).
 2. **Pick Model** → choose the file (it is copied to the app cache; 400 MB takes a few seconds).
-3. Pick **CPU** or **GPU**. The app tries, in order: multimodal on your chosen backend → text-GPU + vision-CPU → multimodal CPU → text-only CPU, and tells you what actually loaded.
+3. Pick **CPU** or **GPU**. If the model can't load that way, the app falls back step by step, down to text only on the CPU, and shows what loaded. If Android kills the process, there is no fallback.
 4. **Image** → pick a photo → type a question → **Send**.
 
-## Findings baked into the code (the parts that cost time)
-
-- **`audioBackend` must be omitted for bundles without an audio encoder.** Setting `audioBackend = Backend.CPU()` on a vision-only bundle fails conversation creation with `NOT_FOUND: TF_LITE_AUDIO_ENCODER_HW not found in the model` (`ChatEngine.kt`, stage 1 comment).
-- **The SigLIP2 vision encoder does not compile on the Pixel GPU delegate** (`vision_litert_compiled_model_executor.cc:247`), while the LFM2.5-VL *text* graph delegates fully to OpenCL (937/937 and 543/543 nodes measured via `litert_lm_main`). Hence the dedicated **text-GPU + vision-CPU** fallback stage — vision is a one-shot per image, so this split costs little.
-- `Contents` has no public constructor — use `Contents.of(...)`; `Content.Text` goes **before** `Content.ImageFile`.
-- Model/media files must be copied out of `content://` URIs into `cacheDir` with their real display names — the native engine inspects file extensions.
-
-This app was generated by following the `create-litert-lm-android-demo-app` agent skill that ships inside the [LiteRT-LM repository](https://github.com/google-ai-edge/LiteRT-LM) (Maven scenario); `task.md` and the three `compliance_review_*.md` files are that skill's audit trail.
+The **Audio** button is disabled, because audio isn't wired up yet. The runtime problems I worked around are in [the details](docs/details.md).
 
 ## License
 
-Apache-2.0. Model files are licensed by their publishers (the LFM2.5-VL family is under the LFM Open License v1.0).
+Apache-2.0 for the code. Each model has its publisher's license, and the LFM2.5-VL family is under the LFM Open License v1.0.
