@@ -6,12 +6,12 @@ Paths below: `K` = `litert_lm_android_sample_app/src/main/java/com/litertlm/chat
 | Requirement | Status | Evidence |
 | :--- | :--- | :--- |
 | **Setup & Build** | | |
-| Workspace Directory Name | Pass | Workspace root `litert_lm_android_sample_app/` holds MODULE.bazel + BUILD (`ls`; task.md Environment section) |
+| Workspace Directory Name | Pass | Workspace root `litert_lm_android_sample_app/` holds MODULE.bazel + BUILD (`ls`) |
 | Strictly Bazel 9 (No Gradle files generated) | Pass | `.bazelversion` = `9.0.0`; no `*.gradle` in tree (`find . -name '*.gradle'` = empty) |
 | SDK Version (`minSdkVersion` >= 24) | Pass | M:5 `minSdkVersion="31"` |
 | SDK Version (`targetSdkVersion` >= 35) | Pass | M:5 `targetSdkVersion="35"` |
 | Bzlmod Config (Bazel 9, no WORKSPACE) | Pass | No WORKSPACE file exists; MODULE.bazel lines 1–45 define all deps (rules_android 0.7.1, rules_kotlin 2.3.20, rules_java 7.12.2, rules_jvm_external 6.2, rules_android_ndk 0.1.5) |
-| Bazel Platform Flag Setup (ARM64 Only) | Pass | task.md Environment section line "Mandatory bazel flag …--android_platforms=@rules_android//:arm64-v8a"; used in appbuild4–9 command lines (/tmp/appbuild9.log header) |
+| Bazel Platform Flag Setup (ARM64 Only) | Pass | `--android_platforms=@rules_android//:arm64-v8a` used in appbuild4–9 command lines (/tmp/appbuild9.log header) |
 | AppCompat Avoidance (Extends `Activity`) | Pass | K:30 `class MainActivity : Activity()`; no androidx.appcompat in MODULE.bazel artifacts |
 | Bzlmod SDK Configuration Fallback | Pass | MOD `android_sdk_repository_extension.configure(path=…/Library/Android/sdk, api_level=35, build_tools_version="35.0.0")` |
 | Source Compilation Target | Pass | B:4 `kt_android_library(name="app_lib", srcs=glob([src/main/java/**/*.kt]))` |
